@@ -6,7 +6,11 @@
 - Spring JDBC
 - Spring Test
 - JUnit
+- AssertJ
 - MySql
+- HikariCP
+- LogBack
+- Lombok
 - JSP
 - jQuery
 - Bootstrap
