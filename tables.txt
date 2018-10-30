@@ -25,7 +25,8 @@ create table user_role(
 
 create table category(
   id bigint primary key auto_increment,
-  name varchar(20) not null
+  name varchar(20) not null,
+  created_at timestamp default current_timestamp
 );
 
 create table board_content(
@@ -46,10 +47,8 @@ create table board(
   created_at timestamp default current_timestamp,
   updated_at timestamp,
   user_id bigint not null,
-  board_content_id bigint not null,
   category_id bigint not null,
   foreign key(user_id) references user(id),
-  foreign key(board_content_id) references board_content(id),
   foreign key(category_id) references category(id)
 );
 
@@ -65,7 +64,7 @@ create table comment(
   foreign key(user_id) references user(id)
 );
 
-create table file(
+create table file_info(
   id bigint primary key auto_increment,
   board_id bigint not null,
   name varchar(100) not null,
