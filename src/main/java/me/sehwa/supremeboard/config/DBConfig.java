@@ -7,11 +7,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @Configuration
 @PropertySource("classpath:/supremeboard.properties")
+@EnableTransactionManagement
 public class DBConfig {
 
     @Autowired
@@ -32,5 +36,10 @@ public class DBConfig {
         config.setMaximumPoolSize(Integer.parseInt(env.getProperty("maximumPoolSize")));
 
         return new HikariDataSource(config);
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManger() {
+        return new DataSourceTransactionManager(dataSource());
     }
 }
