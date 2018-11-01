@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 @Setter
 public class Role {
     private Long id;
-    private String name;
+    private RoleName name;
     private LocalDateTime createdAt;
 
-    public Role(String name) {
+    public Role(RoleName name) {
         this.name = name;
     }
 }
