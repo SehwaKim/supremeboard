@@ -1,7 +1,7 @@
 package me.sehwa.supremeboard.dao;
 
 import me.sehwa.supremeboard.domain.User;
-import me.sehwa.supremeboard.domain.UserSQL;
+import me.sehwa.supremeboard.exception.DaoLayerException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -27,13 +27,13 @@ public class UserDao {
         jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("user").usingGeneratedKeyColumns("id");
     }
 
-    public Long insert(User aUser) {
+    public Long insert(User aUser) throws DaoLayerException {
         SqlParameterSource source = new BeanPropertySqlParameterSource(aUser);
         Number id = jdbcInsert.executeAndReturnKey(source);
         return id.longValue();
     }
 
-    public User selectById(Long id) {
+    public User selectById(Long id) throws DaoLayerException {
         Map<String, String> param = Collections.singletonMap("id", String.valueOf(id)); // named parameter 에 Long 안된다.
         try {
             return jdbcTemplate.queryForObject(UserSQL.selectOneById, param, rowMapper);
@@ -42,7 +42,7 @@ public class UserDao {
         }
     }
 
-    public User selectByEmail(String email) {
+    public User selectByEmail(String email) throws DaoLayerException {
         Map<String, String> param = Collections.singletonMap("email", String.valueOf(email));
         try {
             return jdbcTemplate.queryForObject(UserSQL.selectOneByEmail, param, rowMapper);
@@ -51,7 +51,7 @@ public class UserDao {
         }
     }
 
-    public int update(User aUser){
+    public int update(User aUser) throws DaoLayerException {
         SqlParameterSource params = new BeanPropertySqlParameterSource(aUser);
         return jdbcTemplate.update(UserSQL.update, params);
     }

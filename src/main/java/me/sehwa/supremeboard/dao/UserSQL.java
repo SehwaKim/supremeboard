@@ -1,17 +1,17 @@
-package me.sehwa.supremeboard.domain;
+package me.sehwa.supremeboard.dao;
 
-public final class UserSQL {
-    public static final  String selectOneById =
+final class UserSQL {
+    static final  String selectOneById =
             "SELECT id, email, name, password, created_at, updated_at, last_access_date, status" +
             " FROM user" +
             " WHERE id = :id and status = 'ENABLED'";
 
-    public static final String selectOneByEmail =
+    static final String selectOneByEmail =
             "SELECT id, email, name, password, created_at, updated_at, last_access_date, status" +
                     " FROM user" +
                     " WHERE email = :email and status = 'ENABLED'";
 
-    public static final String update =
+    static final String update =
             "update user set" +
                     " email = :email" +
                     ", password = :password" +
