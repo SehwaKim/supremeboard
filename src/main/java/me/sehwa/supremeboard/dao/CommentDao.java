@@ -2,6 +2,7 @@ package me.sehwa.supremeboard.dao;
 
 import me.sehwa.supremeboard.domain.Comment;
 import me.sehwa.supremeboard.exception.RepositoryException;
+import me.sehwa.supremeboard.util.Pagination;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -37,7 +39,7 @@ public class CommentDao {
         }
     }
 
-    public Comment selectOneById(Long id) {
+    public Comment selectOneById(Long id) throws RepositoryException {
         try {
             Map<String, String> map = Collections.singletonMap("id", String.valueOf(id));
             return jdbcTemplate.queryForObject(CommentSQL.selectOneById, map, rowMapper);
@@ -48,10 +50,26 @@ public class CommentDao {
         }
     }
 
-    public int updateContent(String content, Long id) {
-        Map<String, String> map = new HashMap<>();
-        map.put("content", content);
-        map.put("id", String.valueOf(id));
-        return jdbcTemplate.update(CommentSQL.updateComment, map);
+    public List<Comment> selectAll(Pagination pagination, Long boardId) throws RepositoryException {
+        try {
+            Map<String, Object> map = new HashMap<>();
+            map.put("boardId", boardId);
+//            map.put("startIdx", pagination.getStartIdx());
+//            map.put("postSize", pagination.getPostSize());
+            return jdbcTemplate.query(CommentSQL.selectAll, map, rowMapper);
+        } catch (RuntimeException e) {
+            throw new RepositoryException(e);
+        }
+    }
+
+    public int updateContent(String content, Long id) throws RepositoryException {
+        try {
+            Map<String, String> map = new HashMap<>();
+            map.put("content", content);
+            map.put("id", String.valueOf(id));
+            return jdbcTemplate.update(CommentSQL.updateContent, map);
+        } catch (RuntimeException e) {
+            throw new RepositoryException(e);
+        }
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -57,6 +59,22 @@ public class CommentDaoTest {
         // then
         assertThat(theComment).isNotNull();
         assertThat(theComment.getId()).isEqualTo(id);
+    }
+
+    @Test
+    public void selectAllTest() {
+        // when
+        List<Comment> list = commentDao.selectAll(null, 0L);
+        // then
+        assertThat(list).isNotNull();
+        assertThat(list.isEmpty()).isTrue();
+
+        // given
+        commentDao.insert(createTestComment());
+        // when
+        list = commentDao.selectAll(null, 1L);
+        // then
+        assertThat(list.isEmpty()).isFalse();
     }
 
     @Test
