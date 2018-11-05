@@ -2,6 +2,7 @@ package me.sehwa.supremeboard.dao;
 
 import me.sehwa.supremeboard.domain.Board;
 import me.sehwa.supremeboard.exception.RepositoryException;
+import me.sehwa.supremeboard.util.Pagination;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,6 +14,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BoardDao {
@@ -27,8 +29,8 @@ public class BoardDao {
     }
 
     public Long insert(Board aBoard) throws RepositoryException {
-        SqlParameterSource source = new BeanPropertySqlParameterSource(aBoard);
         try {
+            SqlParameterSource source = new BeanPropertySqlParameterSource(aBoard);
             Number id = jdbcInsert.executeAndReturnKey(source);
             return id.longValue();
         } catch (RuntimeException e) {
@@ -36,9 +38,9 @@ public class BoardDao {
         }
     }
 
-    public Board selectById(Long id) throws RepositoryException {
-        Map<String, String> param = Collections.singletonMap("id", String.valueOf(id));
+    public Board selectOneById(Long id) throws RepositoryException {
         try {
+            Map<String, String> param = Collections.singletonMap("id", String.valueOf(id));
             return jdbcTemplate.queryForObject(BoardSQL.selectOneById, param, rowMapper);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -47,11 +49,26 @@ public class BoardDao {
         }
     }
 
-    public int updateTitle(Long id, String newTitle) throws RepositoryException {
-        Map<String, String> param = new HashMap<>();
-        param.put("id", String.valueOf(id));
-        param.put("title", newTitle);
+    public List<Board> selectAll(Pagination pagination, int categoryId, String[] searchType, String searchStr) throws RepositoryException {
         try {
+            Map<String, Object> map = new HashMap<>();
+            map.put("categoryId", categoryId);
+//            map.put("startIdx", pagination.getStartIdx());
+//            map.put("postSize", pagination.getPostSize());
+            map.put("searchStr", searchStr);
+            String sql = BoardSQL.createSelectListSQL(searchType);
+            List<Board> boardList = jdbcTemplate.query(sql, map, rowMapper);
+            return boardList;
+        } catch (RuntimeException e) {
+            throw new RepositoryException(e);
+        }
+    }
+
+    public int updateTitle(Long id, String newTitle) throws RepositoryException {
+        try {
+            Map<String, String> param = new HashMap<>();
+            param.put("id", String.valueOf(id));
+            param.put("title", newTitle);
             return jdbcTemplate.update(BoardSQL.updateTitle, param);
         } catch (RuntimeException e) {
             throw new RepositoryException(e);
@@ -59,8 +76,8 @@ public class BoardDao {
     }
 
     public int updateHit(Long id) {
-        Map<String, String> param = Collections.singletonMap("id", String.valueOf(id));
         try {
+            Map<String, String> param = Collections.singletonMap("id", String.valueOf(id));
             return jdbcTemplate.update(BoardSQL.updateHit, param);
         } catch (RuntimeException e) {
             throw new RepositoryException(e);
@@ -68,8 +85,8 @@ public class BoardDao {
     }
 
     public int updateCommentCnt(Long id) {
-        Map<String, String> param = Collections.singletonMap("id", String.valueOf(id));
         try {
+            Map<String, String> param = Collections.singletonMap("id", String.valueOf(id));
             return jdbcTemplate.update(BoardSQL.updateCommentCnt, param);
         } catch (RuntimeException e) {
             throw new RepositoryException(e);
