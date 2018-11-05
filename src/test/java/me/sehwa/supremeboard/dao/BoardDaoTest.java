@@ -123,7 +123,7 @@ public class BoardDaoTest {
 
     @Test(expected = RepositoryException.class)
     public void selectAllSearchedByInvalidSearchTypeTest() {
-        String searchType = "title; DELETE * board WHERE '1' = '1";
+        String searchType = "title; DELETE * board WHERE '1' = '1';";
         String searchStr = "안녕";
         boardDao.selectAll(null, 1, new String[]{searchType}, searchStr);
     }
