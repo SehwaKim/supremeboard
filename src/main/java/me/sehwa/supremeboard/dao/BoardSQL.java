@@ -14,15 +14,15 @@ class BoardSQL {
             "      , category_id" +
             " from board where id = :id";
 
-    public static String updateTitle = "update board set title = :title where id = :id";
+    static String updateTitle = "update board set title = :title where id = :id";
 
-    public static String updateHit = "update board set hit = hit + 1 where id = :id";
+    static String updateHit = "update board set hit = hit + 1 where id = :id";
 
-    public static String updateCommentCnt = "update board set comment_cnt = comment_cnt + 1 where id = :id";
+    static String updateCommentCnt = "update board set comment_cnt = comment_cnt + 1 where id = :id";
 
     private BoardSQL(){}
 
-    public static String createSelectListSQL(String[] searchType) throws IllegalArgumentException {
+    static String createSelectAllSQL(String[] searchType) throws IllegalArgumentException {
         // case: 이름, 제목, 내용, 제목+내용
 
         StringBuilder sb = new StringBuilder("select b.id\n");

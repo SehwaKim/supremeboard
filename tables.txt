@@ -16,9 +16,9 @@ create table role(
 );
 
 create table user_role(
-  userId bigint not null,
+  user_id bigint not null,
   role_id bigint not null,
-  foreign key(userId) references user(id),
+  foreign key(user_id) references user(id),
   foreign key(role_id) references role(id),
   primary key(userId, role_id)
 );
@@ -34,8 +34,8 @@ create table board_content(
   content text not null,
   created_at timestamp default current_timestamp,
   updated_at timestamp,
-  boardId bigint not null,
-  foreign key(boardId) references board(id)
+  board_id bigint not null,
+  foreign key(board_id) references board(id)
 );
 
 create table board(
@@ -46,10 +46,10 @@ create table board(
   comment_cnt bigint default 0,
   created_at timestamp default current_timestamp,
   updated_at timestamp,
-  userId bigint not null,
-  categoryId bigint not null,
-  foreign key(userId) references user(id),
-  foreign key(categoryId) references category(id)
+  user_id bigint not null,
+  category_id bigint not null,
+  foreign key(user_id) references user(id),
+  foreign key(category_id) references category(id)
 );
 
 create table comment(
@@ -58,19 +58,19 @@ create table comment(
   content varchar(200) not null,
   created_at timestamp default current_timestamp,
   updated_at timestamp,
-  boardId bigint not null,
-  userId bigint not null,
-  foreign key(boardId) references board(id),
-  foreign key(userId) references user(id)
+  board_id bigint not null,
+  user_id bigint not null,
+  foreign key(board_id) references board(id),
+  foreign key(user_id) references user(id)
 );
 
 create table file_info(
   id bigint primary key auto_increment,
-  boardId bigint not null,
+  board_id bigint not null,
   name varchar(100) not null,
   path varchar(100) not null,
   size bigint,
   type varchar(25),
   created_at TIMESTAMP default current_timestamp,
-  FOREIGN KEY(boardId) references board(id)
+  FOREIGN KEY(board_id) references board(id)
 );

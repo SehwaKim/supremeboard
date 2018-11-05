@@ -31,8 +31,7 @@ public class BoardDao {
     public Long insert(Board aBoard) throws RepositoryException {
         try {
             SqlParameterSource source = new BeanPropertySqlParameterSource(aBoard);
-            Number id = jdbcInsert.executeAndReturnKey(source);
-            return id.longValue();
+            return jdbcInsert.executeAndReturnKey(source).longValue();
         } catch (RuntimeException e) {
             throw new RepositoryException(e);
         }
@@ -56,9 +55,8 @@ public class BoardDao {
 //            map.put("startIdx", pagination.getStartIdx());
 //            map.put("postSize", pagination.getPostSize());
             map.put("searchStr", searchStr);
-            String sql = BoardSQL.createSelectListSQL(searchType);
-            List<Board> boardList = jdbcTemplate.query(sql, map, rowMapper);
-            return boardList;
+            String sql = BoardSQL.createSelectAllSQL(searchType);
+            return jdbcTemplate.query(sql, map, rowMapper);
         } catch (RuntimeException e) {
             throw new RepositoryException(e);
         }

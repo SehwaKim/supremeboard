@@ -168,6 +168,6 @@ public class BoardDaoTest {
     }
 
     private Board createTestBoard() {
-        return Board.builder().categoryId(1L).userId(42L).title("안녕하세요").content("배고파밥줘").writer("김세화").build();
+        return Board.builder().categoryId(1L).userId(1L).title("안녕하세요").content("배고파밥줘").writer("김세화").build();
     }
 }

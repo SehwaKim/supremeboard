@@ -28,18 +28,17 @@ public class UserDao {
     }
 
     public Long insert(User aUser) throws RepositoryException {
-        SqlParameterSource source = new BeanPropertySqlParameterSource(aUser);
         try {
-            Number id = jdbcInsert.executeAndReturnKey(source);
-            return id.longValue();
+            SqlParameterSource source = new BeanPropertySqlParameterSource(aUser);
+            return jdbcInsert.executeAndReturnKey(source).longValue();
         } catch (RuntimeException e) {
             throw new RepositoryException(e);
         }
     }
 
     public User selectById(Long id) throws RepositoryException {
-        Map<String, String> param = Collections.singletonMap("id", String.valueOf(id)); // named parameter 에 Long 안된다.
         try {
+            Map<String, String> param = Collections.singletonMap("id", String.valueOf(id)); // named parameter 에 Long 안된다.
             return jdbcTemplate.queryForObject(UserSQL.selectOneById, param, rowMapper);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -49,8 +48,8 @@ public class UserDao {
     }
 
     public User selectByEmail(String email) throws RepositoryException {
-        Map<String, String> param = Collections.singletonMap("email", String.valueOf(email));
         try {
+            Map<String, String> param = Collections.singletonMap("email", String.valueOf(email));
             return jdbcTemplate.queryForObject(UserSQL.selectOneByEmail, param, rowMapper);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -60,8 +59,8 @@ public class UserDao {
     }
 
     public int update(User aUser) throws RepositoryException {
-        SqlParameterSource params = new BeanPropertySqlParameterSource(aUser);
         try {
+            SqlParameterSource params = new BeanPropertySqlParameterSource(aUser);
             return jdbcTemplate.update(UserSQL.update, params);
         } catch (RuntimeException e) {
             throw new RepositoryException(e);
