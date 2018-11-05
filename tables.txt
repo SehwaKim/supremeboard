@@ -16,11 +16,11 @@ create table role(
 );
 
 create table user_role(
-  user_id bigint not null,
+  userId bigint not null,
   role_id bigint not null,
-  foreign key(user_id) references user(id),
+  foreign key(userId) references user(id),
   foreign key(role_id) references role(id),
-  primary key(user_id, role_id)
+  primary key(userId, role_id)
 );
 
 create table category(
@@ -34,8 +34,8 @@ create table board_content(
   content text not null,
   created_at timestamp default current_timestamp,
   updated_at timestamp,
-  board_id bigint not null,
-  foreign key(board_id) references board(id)
+  boardId bigint not null,
+  foreign key(boardId) references board(id)
 );
 
 create table board(
@@ -43,13 +43,13 @@ create table board(
   title varchar(100) not null,
   writer varchar(50) not null,
   hit bigint default 0,
-  comment_cnt bigint,
+  comment_cnt bigint default 0,
   created_at timestamp default current_timestamp,
   updated_at timestamp,
-  user_id bigint not null,
-  category_id bigint not null,
-  foreign key(user_id) references user(id),
-  foreign key(category_id) references category(id)
+  userId bigint not null,
+  categoryId bigint not null,
+  foreign key(userId) references user(id),
+  foreign key(categoryId) references category(id)
 );
 
 create table comment(
@@ -58,19 +58,19 @@ create table comment(
   content varchar(200) not null,
   created_at timestamp default current_timestamp,
   updated_at timestamp,
-  board_id bigint not null,
-  user_id bigint not null,
-  foreign key(board_id) references board(id),
-  foreign key(user_id) references user(id)
+  boardId bigint not null,
+  userId bigint not null,
+  foreign key(boardId) references board(id),
+  foreign key(userId) references user(id)
 );
 
 create table file_info(
   id bigint primary key auto_increment,
-  board_id bigint not null,
+  boardId bigint not null,
   name varchar(100) not null,
   path varchar(100) not null,
   size bigint,
   type varchar(25),
   created_at TIMESTAMP default current_timestamp,
-  FOREIGN KEY(board_id) references board(id)
+  FOREIGN KEY(boardId) references board(id)
 );

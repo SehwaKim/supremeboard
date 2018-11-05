@@ -13,19 +13,22 @@ public class Board {
     private String title;
     private String writer;
     private String content;
-    private Long hit;
-    private Long commentCnt;
+    private long hit;
+    private long commentCnt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Long user_id;
-    private Long category_id;
+    private Long userId;
+    private Long categoryId;
+
+    public Board() {
+    }
 
     @Builder
-    public Board(String title, String writer, String content, Long user_id, Long category_id) {
+    public Board(String title, String writer, String content, Long userId, Long categoryId) {
         this.title = title;
         this.writer = writer;
         this.content = content;
-        this.user_id = user_id;
-        this.category_id = category_id;
+        this.userId = userId;
+        this.categoryId = categoryId;
     }
 }

@@ -15,14 +15,14 @@ public class FileInfo {
     private Long size;
     private String type;
     private LocalDateTime createdAt;
-    private Long board_id;
+    private Long boardId;
 
     @Builder
-    public FileInfo(String name, String path, Long size, String type, Long board_id) {
+    public FileInfo(String name, String path, Long size, String type, Long boardId) {
         this.name = name;
         this.path = path;
         this.size = size;
         this.type = type;
-        this.board_id = board_id;
+        this.boardId = boardId;
     }
 }

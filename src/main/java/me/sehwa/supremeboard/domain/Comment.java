@@ -14,14 +14,14 @@ public class Comment {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Long board_id;
-    private Long user_id;
+    private Long boardId;
+    private Long userId;
 
     @Builder
-    public Comment(String commenter, String content, Long board_id, Long user_id) {
+    public Comment(String commenter, String content, Long boardId, Long userId) {
         this.commenter = commenter;
         this.content = content;
-        this.board_id = board_id;
-        this.user_id = user_id;
+        this.boardId = boardId;
+        this.userId = userId;
     }
 }
