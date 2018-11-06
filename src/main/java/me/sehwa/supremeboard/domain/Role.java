@@ -8,9 +8,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class Role {
-    private Long id;
+    private Long roleId;
+    private Long userId;
     private RoleName name;
     private LocalDateTime createdAt;
+
+    public Role() {}
 
     public Role(RoleName name) {
         this.name = name;

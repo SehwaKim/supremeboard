@@ -18,7 +18,7 @@ public class User {
     private LocalDateTime updatedAt;
     private LocalDateTime lastAccessDate;
     private UserStatus status;
-    private List<UserRole> roles = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
 
     public User() {
         // 디폴트 생성자가 없으면 row mapper 가 매핑을 못하더라고...
@@ -35,7 +35,8 @@ public class User {
         return status.name();
     }
 
-    private void addRole(UserRole role) {
+    public void addRole(Role role) {
         roles.add(role);
+        role.setUserId(this.id);
     }
 }
