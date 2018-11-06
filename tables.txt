@@ -72,5 +72,6 @@ create table file_info(
   size bigint,
   type varchar(25),
   created_at TIMESTAMP default current_timestamp,
+  deleted varchar(1) default 'n',
   FOREIGN KEY(board_id) references board(id)
 );

@@ -12,13 +12,17 @@ public class FileInfo {
     private Long id;
     private String name;
     private String path;
-    private Long size;
+    private long size;
     private String type;
     private LocalDateTime createdAt;
     private Long boardId;
+    private String deleted;
+
+
+    public FileInfo() {}
 
     @Builder
-    public FileInfo(String name, String path, Long size, String type, Long boardId) {
+    public FileInfo(String name, String path, long size, String type, Long boardId) {
         this.name = name;
         this.path = path;
         this.size = size;
