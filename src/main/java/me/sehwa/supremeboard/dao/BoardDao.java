@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.Collections;
@@ -17,15 +18,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class BoardDao {
 
     private NamedParameterJdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
+    private SimpleJdbcInsert jdbcInsertForContent;
     private RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
 
     public BoardDao(DataSource dataSource) {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("board").usingGeneratedKeyColumns("id");
+        jdbcInsertForContent = new SimpleJdbcInsert(dataSource).withTableName("board_content").usingGeneratedKeyColumns("id");
     }
 
     public Long insert(Board aBoard) throws RepositoryException {
@@ -48,14 +52,14 @@ public class BoardDao {
         }
     }
 
-    public List<Board> selectAll(Pagination pagination, int categoryId, String[] searchType, String searchStr) throws RepositoryException {
+    public List<Board> selectAll(Pagination pagination, Long categoryId, String[] searchTypes, String searchStr) throws RepositoryException {
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("categoryId", categoryId);
 //            map.put("startIdx", pagination.getStartIdx());
 //            map.put("postSize", pagination.getPostSize());
             map.put("searchStr", searchStr);
-            String sql = BoardSQL.createSelectAllSQL(searchType);
+            String sql = BoardSQL.createSelectAllSQL(searchTypes);
             return jdbcTemplate.query(sql, map, rowMapper);
         } catch (RuntimeException e) {
             throw new RepositoryException(e);
@@ -73,7 +77,7 @@ public class BoardDao {
         }
     }
 
-    public int updateHit(Long id) {
+    public int updateHit(Long id) throws RepositoryException {
         try {
             Map<String, String> param = Collections.singletonMap("id", String.valueOf(id));
             return jdbcTemplate.update(BoardSQL.updateHit, param);
@@ -82,10 +86,19 @@ public class BoardDao {
         }
     }
 
-    public int updateCommentCnt(Long id) {
+    public int updateCommentCnt(Long id) throws RepositoryException {
         try {
             Map<String, String> param = Collections.singletonMap("id", String.valueOf(id));
             return jdbcTemplate.update(BoardSQL.updateCommentCnt, param);
+        } catch (RuntimeException e) {
+            throw new RepositoryException(e);
+        }
+    }
+
+    public Long insertContent(Board aBoard) {
+        try {
+            SqlParameterSource source = new BeanPropertySqlParameterSource(aBoard);
+            return jdbcInsertForContent.executeAndReturnKey(source).longValue();
         } catch (RuntimeException e) {
             throw new RepositoryException(e);
         }

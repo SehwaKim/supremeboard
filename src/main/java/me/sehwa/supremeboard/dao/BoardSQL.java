@@ -2,23 +2,25 @@ package me.sehwa.supremeboard.dao;
 
 import me.sehwa.supremeboard.domain.BoardSearchType;
 
-class BoardSQL {
-    static final String selectOneById = "select id" +
+final class BoardSQL {
+    static final String selectOneById = "select b.id" +
             "      , title" +
             "      , writer" +
+            "      , content" +
             "      , hit" +
             "      , comment_cnt" +
-            "      , created_at" +
-            "      , updated_at" +
+            "      , b.created_at" +
+            "      , b.updated_at" +
             "      , user_id" +
             "      , category_id" +
-            " from board where id = :id";
+            " from board b left outer join board_content bc on b.id = bc.board_id where b.id = :id";
 
-    static String updateTitle = "update board set title = :title where id = :id";
+    static String updateTitle = "update board set title = :title, updated_at = CURRENT_TIMESTAMP where id = :id";
 
-    static String updateHit = "update board set hit = hit + 1 where id = :id";
+    static String updateHit = "update board set hit = hit + 1, updated_at = CURRENT_TIMESTAMP where id = :id";
 
-    static String updateCommentCnt = "update board set comment_cnt = comment_cnt + 1 where id = :id";
+    static String updateCommentCnt = "update board set comment_cnt = comment_cnt + 1" +
+            ", updated_at = CURRENT_TIMESTAMP where id = :id";
 
     private BoardSQL(){}
 
@@ -56,6 +58,7 @@ class BoardSQL {
             }
             sb.append(")");
         }
+        sb.append("order by updated_at desc");
 //        sb.append("limit :startIdx, :postSize");
         return sb.toString();
     }

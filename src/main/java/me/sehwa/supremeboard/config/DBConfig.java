@@ -24,6 +24,7 @@ public class DBConfig {
     @Bean
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
+        config.setDriverClassName("com.mysql.jdbc.Driver");
         config.setJdbcUrl(env.getProperty("url"));
         config.setUsername(env.getProperty("username"));
         config.setPassword(env.getProperty("password"));

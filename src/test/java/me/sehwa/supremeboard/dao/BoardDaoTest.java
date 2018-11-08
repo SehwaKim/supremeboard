@@ -53,6 +53,19 @@ public class BoardDaoTest {
     }
 
     @Test
+    public void insertContentTest() {
+        // given
+        Board aBoard = createTestBoard();
+        // when
+        Long id = boardDao.insert(aBoard);
+        aBoard.setBoardId(id);
+        boardDao.insertContent(aBoard);
+        // then
+        Board theBoard = boardDao.selectOneById(id);
+        assertThat(theBoard.getContent()).isEqualTo(aBoard.getContent());
+    }
+
+    @Test
     public void selectByIdTest() {
         // given
         Long id = boardDao.insert(createTestBoard());
@@ -68,9 +81,9 @@ public class BoardDaoTest {
         // given
         boardDao.insert(createTestBoard());
         // when
-        List<Board> list = boardDao.selectAll(null, 1, null, null);
+        List<Board> list = boardDao.selectAll(null, 1L, null, null);
         // then
-        assertThat(list.isEmpty()).isFalse();
+        assertThat(list).isNotEmpty();
     }
 
     @Test
@@ -79,9 +92,9 @@ public class BoardDaoTest {
         boardDao.insert(createTestBoard());
         // when
         String searchStr = "세화";
-        List<Board> searchedList = boardDao.selectAll(null, 1, new String[]{"writer"}, searchStr);
+        List<Board> searchedList = boardDao.selectAll(null, 1L, new String[]{"writer"}, searchStr);
         // then
-        assertThat(searchedList.isEmpty()).isFalse();
+        assertThat(searchedList).isNotEmpty();
     }
 
     @Test
@@ -90,7 +103,7 @@ public class BoardDaoTest {
         boardDao.insert(createTestBoard());
         // when
         String searchStr = "안녕";
-        List<Board> searchedList = boardDao.selectAll(null, 1, new String[]{"title"}, searchStr);
+        List<Board> searchedList = boardDao.selectAll(null, 1L, new String[]{"title"}, searchStr);
         // then
         assertThat(searchedList.isEmpty()).isFalse();
     }
@@ -100,7 +113,7 @@ public class BoardDaoTest {
         // given - 기존에 저장된 board_content 레코드로 조회하자
         // when
         String searchStr = "누가";
-        List<Board> searchedList = boardDao.selectAll(null, 1, new String[]{"content"}, searchStr);
+        List<Board> searchedList = boardDao.selectAll(null, 1L, new String[]{"content"}, searchStr);
         // then
         assertThat(searchedList.isEmpty()).isFalse();
     }
@@ -111,12 +124,12 @@ public class BoardDaoTest {
         boardDao.insert(createTestBoard());
         // when
         String searchStr = "누가"; // 기존에 저장된 board_content 레코드로 조회
-        List<Board> searchedList = boardDao.selectAll(null, 1, new String[]{"content", "title"}, searchStr);
+        List<Board> searchedList = boardDao.selectAll(null, 1L, new String[]{"content", "title"}, searchStr);
         // then
         assertThat(searchedList.isEmpty()).isFalse();
         // when
         searchStr = "안녕";
-        searchedList = boardDao.selectAll(null, 1, new String[]{"content", "title"}, searchStr);
+        searchedList = boardDao.selectAll(null, 1L, new String[]{"content", "title"}, searchStr);
         // then
         assertThat(searchedList.isEmpty()).isFalse();
     }
@@ -125,7 +138,7 @@ public class BoardDaoTest {
     public void selectAllSearchedByInvalidSearchTypeTest() {
         String searchType = "title; DELETE * board WHERE '1' = '1';";
         String searchStr = "안녕";
-        boardDao.selectAll(null, 1, new String[]{searchType}, searchStr);
+        boardDao.selectAll(null, 1L, new String[]{searchType}, searchStr);
     }
 
     @Test

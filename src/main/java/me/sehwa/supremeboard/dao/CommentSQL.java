@@ -1,6 +1,6 @@
 package me.sehwa.supremeboard.dao;
 
-class CommentSQL {
+final class CommentSQL {
 
     static final String selectOneById = "select id" +
         ", commenter" +
@@ -20,7 +20,7 @@ class CommentSQL {
             ", user_id" +
             " from comment";
 
-    static final String updateContent = "update comment set content = :content where id = :id";
+    static final String updateContent = "update comment set content = :content, updated_at = CURRENT_TIMESTAMP where id = :id";
 
     private CommentSQL() {}
 }
