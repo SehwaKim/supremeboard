@@ -8,6 +8,7 @@ import me.sehwa.supremeboard.service.BoardService;
 import me.sehwa.supremeboard.util.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class BoardServiceImpl implements BoardService {
     private BoardDao boardDao;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Board> getBoards(Pagination pagination, Long categoryId, String[] searchTypes, String searchStr) throws ServiceException {
         try {
             return boardDao.selectAll(pagination, categoryId, searchTypes, searchStr);
@@ -28,6 +30,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public Long writeBoard(Board aBoard) throws ServiceException {
         try {
             aBoard.setBoardId(boardDao.insert(aBoard));
