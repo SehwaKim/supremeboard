@@ -39,4 +39,13 @@ public class BoardServiceImpl implements BoardService {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public Board getBoardById(Long id) throws ServiceException {
+        try {
+            return boardDao.selectOneById(id);
+        } catch (RuntimeException e) {
+            throw new ServiceException(e);
+        }
+    }
 }
