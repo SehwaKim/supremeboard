@@ -4,7 +4,7 @@ create table user(
   password varchar(20) not null,
   name varchar(50) not null,
   created_at timestamp default current_timestamp,
-  updated_at timestamp,
+  updated_at timestamp default current_timestamp,
   last_access_date timestamp default current_timestamp,
   status varchar(20) not null
 );
@@ -33,7 +33,7 @@ create table board_content(
   id bigint primary key auto_increment,
   content text not null,
   created_at timestamp default current_timestamp,
-  updated_at timestamp,
+  updated_at timestamp default current_timestamp,
   board_id bigint not null,
   foreign key(board_id) references board(id)
 );
@@ -45,7 +45,7 @@ create table board(
   hit bigint default 0,
   comment_cnt bigint default 0,
   created_at timestamp default current_timestamp,
-  updated_at timestamp,
+  updated_at timestamp default current_timestamp,
   user_id bigint not null,
   category_id bigint not null,
   foreign key(user_id) references user(id),
@@ -57,7 +57,7 @@ create table comment(
   commenter varchar(50) not null,
   content varchar(200) not null,
   created_at timestamp default current_timestamp,
-  updated_at timestamp,
+  updated_at timestamp default current_timestamp,
   board_id bigint not null,
   user_id bigint not null,
   foreign key(board_id) references board(id),
