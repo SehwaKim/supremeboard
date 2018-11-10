@@ -12,6 +12,8 @@ public class Category {
     private String name;
     private LocalDateTime createdAt;
 
+    public Category() {}
+
     public Category(String name) {
         this.name = name;
     }

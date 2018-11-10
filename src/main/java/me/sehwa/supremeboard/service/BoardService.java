@@ -11,4 +11,6 @@ public interface BoardService {
     List<Board> getBoards(Pagination pagination, Long categoryId, String[] searchTypes, String searchStr) throws ServiceException;
 
     Long writeBoard(Board board) throws ServiceException;
+
+    Board getBoardById(Long id) throws ServiceException;
 }

@@ -3,7 +3,9 @@ package me.sehwa.supremeboard.controller;
 import com.sun.org.apache.regexp.internal.RE;
 import lombok.extern.slf4j.Slf4j;
 import me.sehwa.supremeboard.domain.Board;
+import me.sehwa.supremeboard.domain.Comment;
 import me.sehwa.supremeboard.service.BoardService;
+import me.sehwa.supremeboard.service.CommentService;
 import me.sehwa.supremeboard.util.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,9 @@ public class BoardController {
 
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping
     public String getBoards(@RequestParam(name = "category", defaultValue = "1") Long categoryId,
@@ -38,6 +43,16 @@ public class BoardController {
     @GetMapping("/writeform")
     public String writeForm() {
         return "boards/writeform";
+    }
+
+    @GetMapping("/{id}")
+    public String getBoard(@PathVariable(value = "id") Long id, ModelMap modelMap) {
+        Board theBoard = boardService.getBoardById(id);
+        Pagination pagination = new Pagination();
+        List<Comment> comments = commentService.getCommentsByBoard(pagination, theBoard.getId());
+        modelMap.addAttribute("board", theBoard);
+        modelMap.addAttribute("comments", comments);
+        return "boards/view";
     }
 
     @PostMapping
