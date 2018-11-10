@@ -12,3 +12,5 @@
 
 <!-- Bootstrap core CSS -->
 <link href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+<%-- jQuery --%>
+<script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
