@@ -11,4 +11,5 @@ public class Pagination {
     public int getPostSize() {
         return postSize;
     }
+
 }

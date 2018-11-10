@@ -73,7 +73,7 @@
                         <tr>
                             <td class="title">
                                 <a href="/boards/${b.id}">${b.title}</a>
-                                <a href="/boards/${b.id}" class="cmt-cnt" style="padding-left: 3px; font-size: 22px; font-weight: bold; color: #f01600;">
+                                <a href="/boards/${b.id}#comments" class="cmt-cnt" style="padding-left: 3px; font-size: 22px; font-weight: bold; color: #f01600;">
                                     (<u>${b.commentCnt}</u>)
                                 </a>
                             </td>
@@ -105,7 +105,7 @@
             </div>
             <%--검색 div 끝--%>
             <%--페이징 div 시작--%>
-            <div class="pagination" style="padding-top: 10px; padding-bottom: 20px">
+            <div class="pagination" style="padding-top: 10px; padding-bottom: 80px">
                 <a href="#">&laquo;</a>
                 <a href="#">1</a>
                 <a class="active" href="#">2</a>

@@ -3,17 +3,20 @@ package me.sehwa.supremeboard.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
 public class Comment {
     private Long id;
     private String commenter;
     private String content;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDate updatedAt;
     private Long boardId;
     private Long userId;
 
@@ -25,5 +28,7 @@ public class Comment {
         this.content = content;
         this.boardId = boardId;
         this.userId = userId;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDate.now();
     }
 }
