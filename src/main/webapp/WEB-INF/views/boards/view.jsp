@@ -54,7 +54,20 @@
                 'commenter': 'sehwa',
                 'userId': 1
             };
-            var jsonData = JSON.stringify( JSONObject );
+            postCommentAndgetCommentList(JSONObject);
+        }
+        function writeCommentReply(cId) {
+            var JSONObject= {
+                'content': $('#comment-content-' + cId).val(),
+                'boardId': ${board.id},
+                'commenter': 'sehwa',
+                'parentId' : cId,
+                'userId': 1
+            };
+            postCommentAndgetCommentList(JSONObject);
+        }
+        function postCommentAndgetCommentList(JSONObject) {
+            var jsonData = JSON.stringify(JSONObject);
             $.ajax({
                 url : '/api/comments',
                 method : 'post',
@@ -64,19 +77,46 @@
                 success : function (data) {
                     var commentArray = JSON.parse(data);
                     var newList = "";
+                    var indentStr = "";
                     for (var i in commentArray) {
+                        indentStr = "";
+                        for(var idx = 0; idx < commentArray[i].indent; idx++){
+                            indentStr +=
+                                "<span>"
+                                    + "<svg id=\"i-chevron-right\" viewBox=\"0 0 32 32\" width=\"28\" height=\"25\" fill=\"none\" stroke=\"currentcolor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\">"
+                                    + "<path d=\"M12 30 L24 16 12 2\" />"
+                                    + "</svg>"
+                                + "</span>"
+                        }
+
                         newList +=
                             "<tr>" +
-                            "<td colspan=\"2\">" + commentArray[i].content + "</td>" +
+                                "<td colspan=\"2\">" + indentStr + commentArray[i].content + "</td>" +
                             "</tr>" +
                             "<tr class=\"tr-edge\">" +
-                            "<td style=\"padding-left: 20px; font-size: 17px\">" + commentArray[i].commenter + "</td>" +
-                            "<td style=\"font-size: 17px\">" + commentArray[i].updatedAt + "</td>" +
+                                "<td style=\"padding-left: 20px; font-size: 17px\">" + commentArray[i].commenter + "</td>" +
+                                "<td style=\"font-size: 17px\" align=\"center\">" + commentArray[i].updatedAt + "</td>" +
+                                "<td style=\"padding-right: 20px\" align=\"right\">" +
+                                    "<a href=\"javascript:toggleCommentArea('" + commentArray[i].id + "');\" style=\"font-size: 20px;\">" +
+                                    "<u>답글</u>" +
+                                    "</a>" +
+                                "</td>" +
+                            "</tr>" +
+                            "<tr>" +
+                                "<td colspan=\"3\">" +
+                                    "<div id=\"replyDiv_" + commentArray[i].id + "\" align=\"left\" style=\"padding-bottom: 80px; display: none;\">" +
+                                        "<textarea id=\"comment-content-" + commentArray[i].id + "\" name=\"content\" cols=\"55\" rows=\"5\"></textarea>" +
+                                        "<a href=\"javascript:writeCommentReply('" + commentArray[i].id + "');\" style=\"padding-left: 15px;\">[답글등록]</a>" +
+                                    "</div>" +
+                                "</td>" +
                             "</tr>";
                     }
                     document.getElementById("comment-area").innerHTML = newList;
                 }
             });
+        }
+        function toggleCommentArea(cId) {
+            $("#replyDiv_"+cId).toggle();
         }
     </script>
 </head>
@@ -109,18 +149,40 @@
                 <c:if test="${comments != null}">
                     <c:forEach items="${comments}" var="c">
                         <tr>
-                            <td colspan="2">${c.content}</td>
+                            <td colspan="3">
+                                <c:forEach begin="1" end="${c.indent}" step="1">
+                                    <span>
+                                        <svg id="i-chevron-right" viewBox="0 0 32 32" width="28" height="25" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <path d="M12 30 L24 16 12 2" />
+                                        </svg>
+                                    </span>
+                                </c:forEach>
+                                ${c.content}
+                            </td>
                         </tr>
                         <tr class="tr-edge">
                             <td style="padding-left: 20px; font-size: 17px">${c.commenter}</td>
-                            <td style="font-size: 17px">${c.updatedAt}</td>
+                            <td style="font-size: 17px" align="center">${c.updatedAt}</td>
+                            <td style="padding-right: 20px" align="right">
+                                <a href="javascript:toggleCommentArea('${c.id}');" style="font-size: 20px;">
+                                    <u>답글</u>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div id="replyDiv_${c.id}" align="left" style="padding-bottom: 80px; display: none;">
+                                    <textarea id="comment-content-${c.id}" name="content" cols="55" rows="5"></textarea>
+                                    <a href="javascript:writeCommentReply('${c.id}');" style="padding-left: 15px;">[답글등록]</a>
+                                </div>
+                            </td>
                         </tr>
                     </c:forEach>
                 </c:if>
                 </table>
             </div>
-            <div id="comment-input-area" align="left">
-                <textarea id="comment-content" name="content" cols="55" rows="5"></textarea>
+            <div id="comment-input-area" align="left" style="padding-bottom: 80px">
+                <textarea id="comment-content" name="content" cols="55" rows="4"></textarea>
                 <a href="javascript:writeComment();" style="padding-left: 15px;">[댓글등록]</a>
             </div>
             <%--댓글창 끝--%>

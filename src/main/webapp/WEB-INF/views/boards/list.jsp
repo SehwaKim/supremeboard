@@ -74,7 +74,7 @@
                             <td class="title">
                                 <c:forEach begin="1" end="${b.indent}" step="1">
                                     <span>
-                                        <svg id="i-chevron-right" viewBox="0 0 32 32" width="28" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                        <svg id="i-chevron-right" viewBox="0 0 32 32" width="35" height="30" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                             <path d="M12 30 L24 16 12 2" />
                                         </svg>
                                     </span>

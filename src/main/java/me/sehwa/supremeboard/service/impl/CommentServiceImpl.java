@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -35,7 +37,18 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public Long addComment(Comment aComment) throws ServiceException{
         try {
+            if (Objects.nonNull(aComment.getParentId())) {
+                Comment parentComment = commentDao.selectOneById(aComment.getParentId());
+                Long family = Optional.ofNullable(parentComment.getFamily()).orElse(parentComment.getId());
+                aComment.setFamily(family);
+                aComment.setFamilySeq(parentComment.getFamilySeq() + 1);
+                aComment.setIndent(parentComment.getIndent() + 1);
+                commentDao.updateFamilySeq(aComment.getBoardId(), aComment.getFamily(), parentComment.getFamilySeq());
+            }
             Long id = commentDao.insert(aComment);
+            if (Objects.isNull(aComment.getParentId())) {
+                commentDao.updateFamily(id);
+            }
             boardDao.updateCommentCnt(aComment.getBoardId());
             return id;
         } catch (RuntimeException e) {

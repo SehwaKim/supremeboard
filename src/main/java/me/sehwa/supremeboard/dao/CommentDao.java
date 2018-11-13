@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.sql.DataSource;
 import java.util.Collections;
@@ -68,6 +69,27 @@ public class CommentDao {
             map.put("content", content);
             map.put("id", String.valueOf(id));
             return jdbcTemplate.update(CommentSQL.updateContent, map);
+        } catch (RuntimeException e) {
+            throw new RepositoryException(e);
+        }
+    }
+
+    public int updateFamily(Long id) throws RepositoryException {
+        try {
+            Map<String, String> param = Collections.singletonMap("id", String.valueOf(id));
+            return jdbcTemplate.update(CommentSQL.updateFamily, param);
+        } catch (RuntimeException e) {
+            throw new RepositoryException(e);
+        }
+    }
+
+    public int updateFamilySeq(Long boardId, Long family, int edgeOfFamilySeq) throws RepositoryException {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("boardId", String.valueOf(boardId));
+            params.put("family", String.valueOf(family));
+            params.put("edgeOfFamilySeq", String.valueOf(edgeOfFamilySeq));
+            return jdbcTemplate.update(CommentSQL.updateFamilySeq, params);
         } catch (RuntimeException e) {
             throw new RepositoryException(e);
         }

@@ -19,6 +19,10 @@ public class Comment {
     private LocalDate updatedAt;
     private Long boardId;
     private Long userId;
+    private Long parentId;
+    private Long family;
+    private int familySeq;
+    private int indent;
 
     public Comment() {}
 

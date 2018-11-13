@@ -84,6 +84,10 @@ create table comment
   updated_at timestamp                           null,
   board_id   bigint                              not null,
   user_id    bigint                              not null,
+  parent_id  bigint                              null,
+  family     bigint                              null,
+  family_seq int default '1'                     null,
+  indent     int default '0'                     null,
   constraint comment_ibfk_1
   foreign key (board_id) references board (id),
   constraint comment_ibfk_2
