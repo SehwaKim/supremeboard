@@ -1,77 +1,106 @@
-create table user(
-  id bigint primary key auto_increment,
-  email varchar(45) unique,
-  password varchar(20) not null,
-  name varchar(50) not null,
-  created_at timestamp default current_timestamp,
-  updated_at timestamp default current_timestamp,
-  last_access_date timestamp default current_timestamp,
-  status varchar(20) not null
+create table user
+(
+  id               bigint auto_increment
+    primary key,
+  email            varchar(45)                         null,
+  password         varchar(20)                         not null,
+  name             varchar(50)                         not null,
+  created_at       timestamp default CURRENT_TIMESTAMP null,
+  updated_at       timestamp                           null,
+  last_access_date timestamp default CURRENT_TIMESTAMP null,
+  status           varchar(20)                         not null,
+  constraint email
+  unique (email)
 );
 
-create table role(
-  id bigint primary key auto_increment,
-  name varchar(20) not null,
-  created_at timestamp default current_timestamp
+create table role
+(
+  id         bigint auto_increment
+    primary key,
+  name       varchar(20)                         not null,
+  created_at timestamp default CURRENT_TIMESTAMP null
 );
 
-create table user_role(
+create table user_role
+(
   user_id bigint not null,
   role_id bigint not null,
-  foreign key(user_id) references user(id),
-  foreign key(role_id) references role(id),
-  primary key(userId, role_id)
+  primary key (user_id, role_id),
+  constraint user_role_ibfk_1
+  foreign key (user_id) references user (id),
+  constraint user_role_ibfk_2
+  foreign key (role_id) references role (id)
 );
 
-create table category(
-  id bigint primary key auto_increment,
-  name varchar(20) not null,
-  created_at timestamp default current_timestamp
+create table category
+(
+  id         bigint auto_increment
+    primary key,
+  name       varchar(20)                         not null,
+  created_at timestamp default CURRENT_TIMESTAMP null
 );
 
-create table board_content(
-  id bigint primary key auto_increment,
-  content text not null,
-  created_at timestamp default current_timestamp,
-  updated_at timestamp default current_timestamp,
-  board_id bigint not null,
-  foreign key(board_id) references board(id)
+create table board_content
+(
+  id         bigint auto_increment
+    primary key,
+  content    text                                not null,
+  created_at timestamp default CURRENT_TIMESTAMP null,
+  updated_at timestamp                           null,
+  board_id   bigint                              not null,
+  constraint board_content_ibfk_1
+  foreign key (board_id) references board (id)
 );
 
-create table board(
-  id bigint primary key auto_increment,
-  title varchar(100) not null,
-  writer varchar(50) not null,
-  hit bigint default 0,
-  comment_cnt bigint default 0,
-  created_at timestamp default current_timestamp,
-  updated_at timestamp default current_timestamp,
-  user_id bigint not null,
-  category_id bigint not null,
-  foreign key(user_id) references user(id),
-  foreign key(category_id) references category(id)
+create table board
+(
+  id          bigint auto_increment
+   primary key,
+  title       varchar(100)                        not null,
+  writer      varchar(50)                         not null,
+  hit         bigint default '0'                  null,
+  comment_cnt bigint default '0'                  null,
+  user_id     bigint                              not null,
+  category_id bigint                              not null,
+  created_at  timestamp default CURRENT_TIMESTAMP null,
+  updated_at  timestamp default CURRENT_TIMESTAMP null,
+  family      bigint                              null,
+  family_seq  int default '1'                     null,
+  indent      int default '0'                     null,
+  parent_id   bigint                              null,
+  constraint board_ibfk_1
+  foreign key (user_id) references user (id),
+  constraint board_ibfk_2
+  foreign key (category_id) references category (id)
 );
 
-create table comment(
-  id bigint primary key auto_increment,
-  commenter varchar(50) not null,
-  content varchar(200) not null,
-  created_at timestamp default current_timestamp,
-  updated_at timestamp default current_timestamp,
-  board_id bigint not null,
-  user_id bigint not null,
-  foreign key(board_id) references board(id),
-  foreign key(user_id) references user(id)
+create table comment
+(
+  id         bigint auto_increment
+    primary key,
+  commenter  varchar(50)                         not null,
+  content    varchar(200)                        not null,
+  created_at timestamp default CURRENT_TIMESTAMP null,
+  updated_at timestamp                           null,
+  board_id   bigint                              not null,
+  user_id    bigint                              not null,
+  constraint comment_ibfk_1
+  foreign key (board_id) references board (id),
+  constraint comment_ibfk_2
+  foreign key (user_id) references user (id)
 );
 
-create table file_info(
-  id bigint primary key auto_increment,
-  board_id bigint not null,
-  name varchar(100) not null,
-  path varchar(100) not null,
-  size bigint,
-  type varchar(25),
-  created_at TIMESTAMP default current_timestamp,
-  deleted varchar(1) default 'n',
-  FOREIGN KEY(board_id) references board(id)
+create table file_info
+(
+  id         bigint auto_increment
+    primary key,
+  board_id   bigint                              not null,
+  name       varchar(100)                        not null,
+  path       varchar(100)                        not null,
+  size       bigint                              null,
+  type       varchar(25)                         null,
+  created_at timestamp default CURRENT_TIMESTAMP null,
+  deleted    varchar(2) default 'n'              not null,
+  constraint file_info_ibfk_1
+  foreign key (board_id) references board (id)
 );

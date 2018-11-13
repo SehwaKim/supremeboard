@@ -3,6 +3,7 @@ package me.sehwa.supremeboard.dao;
 import me.sehwa.supremeboard.domain.BoardSearchType;
 
 final class BoardSQL {
+
     static final String selectOneById = "select b.id" +
             "      , title" +
             "      , writer" +
@@ -13,14 +14,23 @@ final class BoardSQL {
             "      , b.updated_at" +
             "      , user_id" +
             "      , category_id" +
+            "      , parent_id" +
+            "      , family" +
+            "      , family_seq" +
+            "      , indent" +
             " from board b left outer join board_content bc on b.id = bc.board_id where b.id = :id";
 
-    static String updateTitle = "update board set title = :title, updated_at = CURRENT_TIMESTAMP where id = :id";
+    static final String updateTitle = "update board set title = :title, updated_at = CURRENT_TIMESTAMP where id = :id";
 
-    static String updateHit = "update board set hit = hit + 1, updated_at = CURRENT_TIMESTAMP where id = :id";
+    static final String updateHit = "update board set hit = hit + 1, updated_at = CURRENT_TIMESTAMP where id = :id";
 
-    static String updateCommentCnt = "update board set comment_cnt = comment_cnt + 1" +
+    static final String updateCommentCnt = "update board set comment_cnt = comment_cnt + 1" +
             ", updated_at = CURRENT_TIMESTAMP where id = :id";
+
+    static final String updateFamilySeq = "update board set family_seq = family_seq + 1" +
+            " where family = :family and family_seq > :edgeOfFamilySeq";
+
+    static final String updateFamily = "update board set family = :id where id = :id";
 
     private BoardSQL(){}
 
@@ -39,6 +49,10 @@ final class BoardSQL {
         sb.append(", b.updated_at\n");
         sb.append(", user_id\n");
         sb.append(", category_id\n");
+        sb.append(", parent_id\n");
+        sb.append(", family\n");
+        sb.append(", family_seq\n");
+        sb.append(", indent\n");
         sb.append("from board b\n");
         if (isContentSearched(searchType)) { // case: 내용, 제목+내용
             sb.append("left outer join board_content bc on b.id = bc.board_id\n");
@@ -58,7 +72,7 @@ final class BoardSQL {
             }
             sb.append(")");
         }
-        sb.append("order by updated_at desc");
+        sb.append("order by family desc, family_seq");
 //        sb.append("limit :startIdx, :postSize");
         return sb.toString();
     }

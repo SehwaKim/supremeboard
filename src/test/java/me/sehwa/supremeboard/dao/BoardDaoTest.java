@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,6 +62,36 @@ public class BoardDaoTest {
         // then
         Board theBoard = boardDao.selectOneById(id);
         assertThat(theBoard.getContent()).isEqualTo(aBoard.getContent());
+    }
+
+    @Test
+    public void updateFamilySeqTest() {
+        // given
+        Board parentBoard = createTestBoard();
+        parentBoard = boardDao.selectOneById(boardDao.insert(parentBoard));
+
+        Board reply1 = createTestBoard();
+        reply1.setFamily(parentBoard.getId());
+        reply1.setFamilySeq(2);
+        reply1.setIndent(1);
+        reply1.setParentId(parentBoard.getId());
+        Long reply1Id = boardDao.insert(reply1);
+
+        Board reply2 = createTestBoard();
+        reply2.setFamily(parentBoard.getId());
+        reply2.setFamilySeq(3);
+        reply2.setIndent(2);
+        reply2.setParentId(reply1Id);
+        Long reply2Id = boardDao.insert(reply2);
+
+        // when
+        boardDao.updateFamilySeq(parentBoard.getId(), parentBoard.getFamilySeq());
+
+        // then
+        Board updatedReply1 = boardDao.selectOneById(reply1Id);
+        assertThat(updatedReply1.getFamilySeq()).isEqualTo(reply1.getFamilySeq() + 1);
+        Board updatedReply2 = boardDao.selectOneById(reply2Id);
+        assertThat(updatedReply2.getFamilySeq()).isEqualTo(reply2.getFamilySeq() + 1);
     }
 
     @Test
@@ -181,6 +210,12 @@ public class BoardDaoTest {
     }
 
     private Board createTestBoard() {
-        return Board.builder().categoryId(1L).userId(1L).title("안녕하세요").content("배고파밥줘").writer("김세화").build();
+        return Board.builder()
+                .categoryId(1L)
+                .userId(1L)
+                .title("안녕하세요")
+                .content("배고파밥줘")
+                .writer("김세화")
+                .build();
     }
 }

@@ -99,11 +99,11 @@
                     </tr>
                 </table>
             </div>
-            <%--댓글창 시작--%>
-            <div id="comment-input-area" align="left">
-                <textarea id="comment-content" name="content" cols="55" rows="5"></textarea>
-                <a href="javascript:writeComment();" style="padding-left: 15px;">[답글등록]</a>
+            <div style="padding-top:50px; padding-bottom: 50px">
+                <a href="/boards">[목록으로]</a>
+                <a href="/boards/replyform?pId=${board.id}" style="padding-left: 15px">[답글달기]</a>
             </div>
+            <%--댓글창 시작--%>
             <div id="comments" style="padding-top: 80px; padding-bottom: 80px">
                 <table id="comment-area" width="100%">
                 <c:if test="${comments != null}">
@@ -119,8 +119,9 @@
                 </c:if>
                 </table>
             </div>
-            <div style="padding-bottom: 100px">
-                <a href="/boards">[목록으로]</a>
+            <div id="comment-input-area" align="left">
+                <textarea id="comment-content" name="content" cols="55" rows="5"></textarea>
+                <a href="javascript:writeComment();" style="padding-left: 15px;">[댓글등록]</a>
             </div>
             <%--댓글창 끝--%>
         </div>

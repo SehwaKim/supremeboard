@@ -66,6 +66,15 @@ public class BoardDao {
         }
     }
 
+    public int updateFamily(Long id) throws RepositoryException {
+        try {
+            Map<String, String> param = Collections.singletonMap("id", String.valueOf(id));
+            return jdbcTemplate.update(BoardSQL.updateFamily, param);
+        } catch (RuntimeException e) {
+            throw new RepositoryException(e);
+        }
+    }
+
     public int updateTitle(Long id, String newTitle) throws RepositoryException {
         try {
             Map<String, String> param = new HashMap<>();
@@ -95,10 +104,21 @@ public class BoardDao {
         }
     }
 
-    public Long insertContent(Board aBoard) {
+    public Long insertContent(Board aBoard) throws RepositoryException {
         try {
             SqlParameterSource source = new BeanPropertySqlParameterSource(aBoard);
             return jdbcInsertForContent.executeAndReturnKey(source).longValue();
+        } catch (RuntimeException e) {
+            throw new RepositoryException(e);
+        }
+    }
+
+    public int updateFamilySeq(Long family, int edgeOfFamilySeq) throws RepositoryException {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("family", String.valueOf(family));
+            params.put("edgeOfFamilySeq", String.valueOf(edgeOfFamilySeq));
+            return jdbcTemplate.update(BoardSQL.updateFamilySeq, params);
         } catch (RuntimeException e) {
             throw new RepositoryException(e);
         }

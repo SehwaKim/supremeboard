@@ -45,6 +45,16 @@ public class BoardController {
         return "boards/writeform";
     }
 
+    @GetMapping("/replyform")
+    public String replyForm(@RequestParam(name = "pId") Long parentId,
+                            ModelMap modelMap) {
+
+        Board parentBoard = boardService.getBoardById(parentId);
+        modelMap.addAttribute("replyTitle", "Re: " + parentBoard.getTitle());
+        modelMap.addAttribute("parentId", parentId);
+        return "boards/replyform";
+    }
+
     @GetMapping("/{id}")
     public String getBoard(@PathVariable(value = "id") Long id, ModelMap modelMap) {
         Board theBoard = boardService.getBoardById(id);

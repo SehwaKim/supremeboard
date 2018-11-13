@@ -72,6 +72,13 @@
                     <c:forEach items="${boards}" var="b">
                         <tr>
                             <td class="title">
+                                <c:forEach begin="1" end="${b.indent}" step="1">
+                                    <span>
+                                        <svg id="i-chevron-right" viewBox="0 0 32 32" width="28" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <path d="M12 30 L24 16 12 2" />
+                                        </svg>
+                                    </span>
+                                </c:forEach>
                                 <a href="/boards/${b.id}">${b.title}</a>
                                 <a href="/boards/${b.id}#comments" class="cmt-cnt" style="padding-left: 3px; font-size: 22px; font-weight: bold; color: #f01600;">
                                     (<u>${b.commentCnt}</u>)
