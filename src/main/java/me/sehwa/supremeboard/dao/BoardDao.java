@@ -56,9 +56,9 @@ public class BoardDao {
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("categoryId", categoryId);
-//            map.put("startIdx", pagination.getStartIdx());
-//            map.put("postSize", pagination.getPostSize());
             map.put("searchStr", searchStr);
+            map.put("startNum", pagination.getStartNum());
+            map.put("postSize", pagination.getPostSize());
             String sql = BoardSQL.createSelectAllSQL(searchTypes);
             return jdbcTemplate.query(sql, map, rowMapper);
         } catch (RuntimeException e) {

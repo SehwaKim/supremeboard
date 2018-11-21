@@ -32,7 +32,7 @@ public class BoardController {
                             @RequestParam(name = "str", required = false) String searchStr,
                             ModelMap modelMap) {
 
-        Pagination pagination = new Pagination();
+        Pagination pagination = new Pagination(page);
         String[] searchTypes = searchType != null ? searchType.split("[+]") : null;
         List<Board> boards = boardService.getBoards(pagination, categoryId, searchTypes, searchStr);
         log.info("boards size: {}", boards.size());

@@ -72,8 +72,8 @@ final class BoardSQL {
             }
             sb.append(")");
         }
-        sb.append("order by family desc, family_seq");
-//        sb.append("limit :startIdx, :postSize");
+        sb.append("order by family desc, family_seq\n");
+        sb.append("limit :startNum, :postSize");
         return sb.toString();
     }
 
