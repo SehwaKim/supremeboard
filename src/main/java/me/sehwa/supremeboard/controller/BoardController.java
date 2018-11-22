@@ -27,16 +27,19 @@ public class BoardController {
 
     @GetMapping
     public String getBoards(@RequestParam(name = "category", defaultValue = "1") Long categoryId,
-                            @RequestParam(name = "p", defaultValue = "1") int page,
+                            @RequestParam(name = "p", defaultValue = "1") int currentPage,
                             @RequestParam(name = "type", required = false) String searchType,
                             @RequestParam(name = "str", required = false) String searchStr,
                             ModelMap modelMap) {
 
-        Pagination pagination = new Pagination(page);
+        Pagination pagination = new Pagination(currentPage);
         String[] searchTypes = searchType != null ? searchType.split("[+]") : null;
         List<Board> boards = boardService.getBoards(pagination, categoryId, searchTypes, searchStr);
-        log.info("boards size: {}", boards.size());
+
         modelMap.addAttribute("boards", boards);
+        modelMap.addAttribute("pagination", pagination);
+        modelMap.addAttribute("type", searchType);
+        modelMap.addAttribute("str", searchStr);
         return "boards/list";
     }
 

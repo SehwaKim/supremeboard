@@ -70,7 +70,7 @@ final class BoardSQL {
                     sb.append(" like CONCAT('%', :searchStr, '%')\n");
                 }
             }
-            sb.append(")");
+            sb.append(")\n");
         }
         sb.append("order by family desc, family_seq\n");
         sb.append("limit :startNum, :postSize");

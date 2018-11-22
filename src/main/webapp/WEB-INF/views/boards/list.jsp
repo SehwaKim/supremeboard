@@ -113,15 +113,15 @@
             <%--검색 div 끝--%>
             <%--페이징 div 시작--%>
             <div class="pagination" style="padding-top: 10px; padding-bottom: 80px">
-                <a href="#">&laquo;</a>
-                <a href="#">1</a>
-                <a class="active" href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">6</a>
-                <a href="#">7</a>
-                <a href="#">&raquo;</a>
+                <c:if test="${pagination.hasPrev()}">
+                    <a href="/boards?p=${pagination.startPage-1}&type=${type}&str=${str}">&laquo;</a>
+                </c:if>
+                <c:forEach begin="${pagination.startPage}" end="${pagination.endPage}" step="1" var="page">
+                    <a href="/boards?p=${page}&type=${type}&str=${str}">${page}</a>
+                </c:forEach>
+                <c:if test="${pagination.hasNext()}">
+                    <a href="/boards?p=${pagination.endPage+1}&type=${type}&str=${str}">&raquo;</a>
+                </c:if>
             </div>
             <%--페이징 div 끝--%>
         </div>

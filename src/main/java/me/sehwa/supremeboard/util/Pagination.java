@@ -4,15 +4,28 @@ public class Pagination {
     private final int postSize = 3;
     private int pageSize;
     private int startNum;
-    private int page;
+    private int currentPage;
+    private int startPage;
+    private int endPage;
 
     public Pagination() {
         this(1);
     }
 
-    public Pagination(int page) {
-        this.page = page;
-        this.startNum = postSize * (page - 1);
+    public Pagination(int currentPage) {
+        if (currentPage < 1) {
+            currentPage = 1;
+        }
+        this.currentPage = currentPage;
+        this.startNum = postSize * (currentPage - 1);
+    }
+
+    public boolean hasPrev() {
+        return true;
+    }
+
+    public boolean hasNext() {
+        return true;
     }
 
     public int getPostSize() {
@@ -27,7 +40,15 @@ public class Pagination {
         return startNum;
     }
 
-    public int getPage() {
-        return page;
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public int getStartPage() {
+        return startPage;
+    }
+
+    public int getEndPage() {
+        return endPage;
     }
 }
