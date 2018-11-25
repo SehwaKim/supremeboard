@@ -55,7 +55,7 @@ public class CommentDao {
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("boardId", boardId);
-//            map.put("startIdx", pagination.getStartIdx());
+//            map.put("startIdx", pagination.getPageSize());
 //            map.put("postSize", pagination.getPostSize());
             return jdbcTemplate.query(CommentSQL.selectAll, map, rowMapper);
         } catch (RuntimeException e) {

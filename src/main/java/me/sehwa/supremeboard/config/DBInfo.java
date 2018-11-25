@@ -3,44 +3,44 @@ package me.sehwa.supremeboard.config;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 @PropertySource("classpath:/supremeboard.properties")
 @Getter @Setter
 public class DBInfo {
 
-    @Value("${supremeboard.db.driverClassName}")
+    @Value("${supremeboard.driverClassName}")
     private String driverClassName;
 
-    @Value("${supremeboard.db.url}")
+    @Value("${supremeboard.url}")
     private String url;
 
-    @Value("${supremeboard.db.username}")
+    @Value("${supremeboard.username}")
     private String username;
 
-    @Value("${supremeboard.db.password}")
+    @Value("${supremeboard.password}")
     private String password;
 
-    @Value("${supremeboard.db.autoCommit}")
-    private boolean autoCommit;
+    @Value("${supremeboard.autoCommit}")
+    private String autoCommit;
 
-    @Value("${supremeboard.db.connectionTestQuery}")
+    @Value("${supremeboard.connectionTestQuery}")
     private String connectionTestQuery;
 
-    @Value("${supremeboard.db.connectionTimeout}")
-    private Long connectionTimeout;
+    @Value("${supremeboard.connectionTimeout}")
+    private String connectionTimeout;
 
-    @Value("${supremeboard.db.idleTimeout}")
-    private Long idleTimeout;
+    @Value("${supremeboard.idleTimeout}")
+    private String idleTimeout;
 
-    @Value("${supremeboard.db.maxLifetime}")
-    private Long maxLifetime;
+    @Value("${supremeboard.maxLifetime}")
+    private String maxLifetime;
 
-    @Value("${supremeboard.db.minimumIdle}")
-    private Integer minimumIdle;
+    @Value("${supremeboard.minimumIdle}")
+    private String minimumIdle;
 
-    @Value("${supremeboard.db.maximumPoolSize}")
-    private Integer maximumPoolSize;
+    @Value("${supremeboard.maximumPoolSize}")
+    private String maximumPoolSize;
 }

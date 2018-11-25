@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 
 @Import(DBConfig.class)
 @Configuration
-@ComponentScan(basePackages = {"me.sehwa.supremeboard.service", "me.sehwa.supremeboard.dao", "me.sehwa.supremeboard.config"})
+@ComponentScan(basePackages = {"me.sehwa.supremeboard.service", "me.sehwa.supremeboard.dao"})
 public class RootContextConfig {
 
 }
