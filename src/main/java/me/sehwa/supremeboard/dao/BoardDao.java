@@ -13,10 +13,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class BoardDao {
@@ -119,6 +116,17 @@ public class BoardDao {
             params.put("family", String.valueOf(family));
             params.put("edgeOfFamilySeq", String.valueOf(edgeOfFamilySeq));
             return jdbcTemplate.update(BoardSQL.updateFamilySeq, params);
+        } catch (RuntimeException e) {
+            throw new RepositoryException(e);
+        }
+    }
+
+    public int countAll(String[] searchTypes, String searchStr) {
+        try {
+            Map<String, Object> map = new HashMap<>();
+            map.put("searchStr", searchStr);
+            String sql = BoardSQL.createCountAllSQL(searchTypes);
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, map, Integer.class)).orElse(0);
         } catch (RuntimeException e) {
             throw new RepositoryException(e);
         }

@@ -19,6 +19,11 @@ import java.util.List;
 @Slf4j
 public class BoardController {
 
+    private static final int BOARD_POST_SIZE = 3;
+    private static final int BOARD_PAGE_SIZE = 5;
+    private static final int COMMENT_POST_SIZE = 3;
+    private static final int COMMENT_PAGE_SIZE = 5;
+
     @Autowired
     private BoardService boardService;
 
@@ -32,7 +37,8 @@ public class BoardController {
                             @RequestParam(name = "str", required = false) String searchStr,
                             ModelMap modelMap) {
 
-        Pagination pagination = new Pagination(currentPage);
+        int totalPostSize = boardService.getTotalPostSize(searchType, searchStr);
+        Pagination pagination = new Pagination(currentPage, totalPostSize, BOARD_POST_SIZE, BOARD_PAGE_SIZE);
         String[] searchTypes = searchType != null ? searchType.split("[+]") : null;
         List<Board> boards = boardService.getBoards(pagination, categoryId, searchTypes, searchStr);
 
@@ -61,8 +67,9 @@ public class BoardController {
     @GetMapping("/{id}")
     public String getBoard(@PathVariable(value = "id") Long id, ModelMap modelMap) {
         Board theBoard = boardService.getBoardById(id);
-        Pagination pagination = new Pagination();
+        Pagination pagination = new Pagination(0, COMMENT_POST_SIZE, COMMENT_PAGE_SIZE); // 댓글목록에 대한 페이징 처리
         List<Comment> comments = commentService.getCommentsByBoard(pagination, theBoard.getId());
+//        pagination.setTotalPostSize(comments.size());
         modelMap.addAttribute("board", theBoard);
         modelMap.addAttribute("comments", comments);
         return "boards/view";

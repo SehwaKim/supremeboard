@@ -67,4 +67,13 @@ public class BoardServiceImpl implements BoardService {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public int getTotalPostSize(String searchType, String searchStr) throws ServiceException {
+        try {
+            return boardDao.countAll;
+        } catch (RuntimeException e) {
+            throw new ServiceException(e);
+        }
+    }
 }

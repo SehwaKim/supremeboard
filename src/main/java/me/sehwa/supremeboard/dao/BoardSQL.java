@@ -77,6 +77,28 @@ final class BoardSQL {
         return sb.toString();
     }
 
+    public static String createCountAllSQL(String[] searchTypes) throws IllegalArgumentException {
+        StringBuilder sb = new StringBuilder("select count(b.id)\n");
+        sb.append("from board b\n");
+        if (isContentSearched(searchTypes)) { // case: 내용, 제목+내용
+            sb.append("left outer join board_content bc on b.id = bc.board_id\n");
+        }
+        if (isSearched(searchTypes)) {
+            sb.append("where (");
+            for (int i = 0; i < searchTypes.length; i++) {
+                if (isValidSearchType(searchTypes[i])) {
+                    if (i > 0) {
+                        sb.append(" or ");
+                    }
+                    sb.append(searchTypes[i]);
+                    sb.append(" like CONCAT('%', :searchStr, '%')\n");
+                }
+            }
+            sb.append(")\n");
+        }
+        return sb.toString();
+    }
+
     private static boolean isSearched(String[] searchType) {
         return searchType != null && searchType.length > 0;
     }

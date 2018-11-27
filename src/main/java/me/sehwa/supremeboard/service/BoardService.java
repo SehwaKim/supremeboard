@@ -13,4 +13,6 @@ public interface BoardService {
     Long writeBoard(Board board) throws ServiceException;
 
     Board getBoardById(Long id) throws ServiceException;
+
+    int getTotalPostSize(String searchType, String searchStr) throws ServiceException;
 }
