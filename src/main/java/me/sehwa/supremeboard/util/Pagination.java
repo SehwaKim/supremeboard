@@ -9,6 +9,8 @@ public class Pagination {
     private int startPage;
     private int endPage;
     private int totalPage;
+    private int startIdx; // 페이지 당 시작 게시물 인덱스
+    private int endIdx; // 페이지 당 마지막 게시물 인덱스
 
     public Pagination(int totalPostSize, int postSize, int pageSize) {
         this(1, totalPostSize, postSize, pageSize);
@@ -29,8 +31,17 @@ public class Pagination {
     }
 
     private void init() {
-        startPage = 0;
-        endPage = 0;
+        this.totalPostSize = (int) Math.ceil(totalPostSize*1.0/postSize);
+        this.startPage = (currentPage/(pageSize+1))*pageSize+1;
+        this.endPage = startPage+pageSize-1;
+        if(endPage > totalPostSize){
+            endPage = totalPostSize;
+        }
+        this.startIdx = (this.currentPage-1)*postSize;
+        this.endIdx = startIdx + postSize-1;
+        if(endIdx >= totalPostSize){
+            endIdx = totalPostSize-1;
+        }
     }
 
     public int getPostSize() {
