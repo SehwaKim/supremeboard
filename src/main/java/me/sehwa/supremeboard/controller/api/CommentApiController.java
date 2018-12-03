@@ -34,7 +34,7 @@ public class CommentApiController {
             return ResponseEntity.badRequest().build();
         }
         commentService.addComment(aComment);
-        List<Comment> comments = commentService.getCommentsByBoard(new Pagination(), aComment.getBoardId());
+        List<Comment> comments = commentService.getCommentsByBoard(new Pagination(1,1,1), aComment.getBoardId());
         return ResponseEntity.ok(comments);
     }
 }

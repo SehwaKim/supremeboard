@@ -23,7 +23,7 @@ public class CommentServiceTest {
     @Test
     public void addCommentTest() {
         // given
-        int commentCntBefore = commentService.getCommentsByBoard(new Pagination(), 1L).size();
+        int commentCntBefore = commentService.getCommentsByBoard(new Pagination(1,1,1), 1L).size();
         Comment aComment = Comment.builder()
                         .userId(1L)
                         .content("hahaha")
@@ -34,7 +34,7 @@ public class CommentServiceTest {
         Long id = commentService.addComment(aComment);
         // then
         assertThat(id).isNotNull();
-        int commentCntAfter = commentService.getCommentsByBoard(new Pagination(), 1L).size();
+        int commentCntAfter = commentService.getCommentsByBoard(new Pagination(1,1,1), 1L).size();
         assertThat(commentCntAfter).isEqualTo(commentCntBefore + 1);
     }
 }

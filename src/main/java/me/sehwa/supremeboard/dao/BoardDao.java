@@ -123,8 +123,7 @@ public class BoardDao {
 
     public int countAll(String[] searchTypes, String searchStr) {
         try {
-            Map<String, Object> map = new HashMap<>();
-            map.put("searchStr", searchStr);
+            Map<String, Object> map = Collections.singletonMap("searchStr", searchStr);
             String sql = BoardSQL.createCountAllSQL(searchTypes);
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, map, Integer.class)).orElse(0);
         } catch (RuntimeException e) {

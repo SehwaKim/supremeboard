@@ -14,5 +14,5 @@ public interface BoardService {
 
     Board getBoardById(Long id) throws ServiceException;
 
-    int getTotalPostSize(String searchType, String searchStr) throws ServiceException;
+    int getTotalPostSize(String[] searchTypes, String searchStr) throws ServiceException;
 }

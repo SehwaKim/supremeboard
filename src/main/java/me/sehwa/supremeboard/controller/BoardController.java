@@ -1,6 +1,5 @@
 package me.sehwa.supremeboard.controller;
 
-import com.sun.org.apache.regexp.internal.RE;
 import lombok.extern.slf4j.Slf4j;
 import me.sehwa.supremeboard.domain.Board;
 import me.sehwa.supremeboard.domain.Comment;
@@ -37,9 +36,10 @@ public class BoardController {
                             @RequestParam(name = "str", required = false) String searchStr,
                             ModelMap modelMap) {
 
-        int totalPostSize = boardService.getTotalPostSize(searchType, searchStr);
-        Pagination pagination = new Pagination(currentPage, totalPostSize, BOARD_POST_SIZE, BOARD_PAGE_SIZE);
         String[] searchTypes = searchType != null ? searchType.split("[+]") : null;
+
+        int totalPostSize = boardService.getTotalPostSize(searchTypes, searchStr);
+        Pagination pagination = new Pagination(currentPage, totalPostSize, BOARD_POST_SIZE, BOARD_PAGE_SIZE);
         List<Board> boards = boardService.getBoards(pagination, categoryId, searchTypes, searchStr);
 
         modelMap.addAttribute("boards", boards);
